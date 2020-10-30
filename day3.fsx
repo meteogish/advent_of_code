@@ -24,8 +24,13 @@ let points = circularTransformations |> Seq.scan add (0,0)
 
 let sumAbsPointParts (x, y) = (x |> abs) + (y |> abs)
 
+let answerPartOne = 
+    points 
+    |> Seq.skip (input - 1) 
+    |> Seq.head |> sumAbsPointParts
+
 //part 1
-printfn "Part one: %d" (points |> Seq.skip (input - 1) |> Seq.head |> sumAbsPointParts)
+printfn "Part one: %d" answerPartOne 
 
 let neighboursTransformatioins = Seq.allPairs [-1; 0; 1] [1; 0; -1]
 
@@ -48,6 +53,11 @@ let sumNeighboursAcc firstMap =
         sum
 
 let acc = (Map.empty.Add ((0,0), 1))
-let result = points |> Seq.skip 1 |> Seq.scan (sumNeighboursAcc acc) 0 
+let resultSequence = points |> Seq.skip 1 |> Seq.scan (sumNeighboursAcc acc) 0 
 
-printfn "Part two: %d" (result |> Seq.skipWhile (fun sum -> input > sum) |> Seq.head)
+let answerPartTwo = 
+    resultSequence 
+    |> Seq.skipWhile (fun sum -> input > sum) 
+    |> Seq.head
+
+printfn "Part two: %d" answerPartTwo 
