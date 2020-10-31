@@ -1,24 +1,23 @@
-open System
-open System.Collections.Generic
-
 let lines = System.IO.File.ReadAllLines("input_day5.txt")
-let numbers = lines |> Seq.map int
 
+let nums = lines |> Seq.map int |> Array.ofSeq
 
-let nums = numbers |> Array.ofSeq
+let offsetChangerPartOne offset =
+    offset + 1
 
+let offsetChangerPartTwo offset =
+    offset + (if offset >= 3 then -1 else 1)
 
-let rec proc currentPos =
-    //printfn "CurentPos: %d" currentPos
+let rec proc offsetChanger acc currentPos =
     if currentPos < 0 || currentPos >= nums.Length then 
-        0
+        acc 
     else
         let offset = nums.[currentPos]
-        //printfn "Moves to: %d" offset 
-        nums.[currentPos] <- offset + 1
-        1 + (proc <| currentPos + offset)
+        nums.[currentPos] <- offset |> offsetChanger 
+        proc offsetChanger (acc + 1) (currentPos + offset)
 
-//nums.[0] <- 2
-printfn "%d" (proc 0) //378980
-//printfn "%A" nums
+//Remember to uncomment only single part. After each run the numbers are mutating which can lead to invalid results.
+//printfn "AnswerPartOne: %d" (proc offsetChangerPartOne 0 0) //378980
+printfn "AnswerPartTwo: %d" (proc offsetChangerPartTwo 0 0) //26889114
+
 
