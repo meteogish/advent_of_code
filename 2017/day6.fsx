@@ -22,8 +22,6 @@ let findMax banks =
     |> Seq.maxBy snd
 
 let increaseBanksIn indexToIncrease ( banks : List<'a> ) =
-    //banks
-    //|> Seq.mapi (fun i b -> if i = indexToIncrease then b + 1 else b)
     banks.[indexToIncrease] <- banks.[indexToIncrease] + 1
     banks 
 
@@ -33,7 +31,6 @@ let zeroBanksIn indexToZero banks =
 
 let redistribute len currentBanks =
     let (maxIndex, max) = currentBanks |> findMax 
-    //printfn "Redistribute: max: %d; atIndex: %d" max maxIndex 
     let mutableBanks = List (currentBanks)
     mutableBanks.[maxIndex] <- 0
     [ 1 .. max ]
@@ -41,15 +38,14 @@ let redistribute len currentBanks =
 
 let proc banks len =
     let rec procAcc len stack bs =
-        let redbtd = redistribute len bs 
-        //printBanks redbtd
+        let nextBanks = redistribute len bs 
 
-        if ((stack |> List.length) % 10) = 0 then
-            printfn "Stack size: %d " stack.Length
+        //if ((stack |> List.length) % 10) = 0 then
+            //printfn "Stack size: %d " stack.Length
         
-        match stack |> List.tryFindIndex (equals redbtd) with 
+        match stack |> List.tryFindIndex (equals nextBanks) with 
         | Some i -> (stack, i)
-        | None -> procAcc len (redbtd :: stack) redbtd
+        | None -> procAcc len (nextBanks :: stack) nextBanks
 
     procAcc len [banks] banks
 
@@ -64,7 +60,7 @@ let answerPair = proc input len
 let answerPartOne = answerPair |> fst |> List.length 
 printfn "AnswerPartOne: %d" answerPartOne
 
-let answerPartTwo = answerPair |> snd
+let answerPartTwo = answerPair |> snd |> (+) 1
 printfn "AnswerPartTwo: %d" answerPartTwo
 
 
