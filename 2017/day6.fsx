@@ -13,7 +13,7 @@ let equals b1 b2 =
     (b1 |> Seq.exists2 (<>) b2)
     |> not
 
-let printBanks = 
+let printBanks : (seq<int> -> unit)= 
     Array.ofSeq >> printfn "%A"
 
 let findMax banks =
@@ -21,13 +21,9 @@ let findMax banks =
     |> Seq.mapi (fun i b -> (i, b))
     |> Seq.maxBy snd
 
-let increaseBanksIn indexToIncrease ( banks : List<'a> ) =
+let increaseBanksIn indexToIncrease ( banks : List<int> ) =
     banks.[indexToIncrease] <- banks.[indexToIncrease] + 1
     banks 
-
-let zeroBanksIn indexToZero banks =
-    banks
-    |> Seq.mapi (fun i b -> if i = indexToZero then 0 else b)
 
 let redistribute len currentBanks =
     let (maxIndex, max) = currentBanks |> findMax 
@@ -39,9 +35,6 @@ let redistribute len currentBanks =
 let proc banks len =
     let rec procAcc len stack bs =
         let nextBanks = redistribute len bs 
-
-        //if ((stack |> List.length) % 10) = 0 then
-            //printfn "Stack size: %d " stack.Length
         
         match stack |> List.tryFindIndex (equals nextBanks) with 
         | Some i -> (stack, i)
@@ -49,19 +42,48 @@ let proc banks len =
 
     procAcc len [banks] banks
 
+let floydsCycleDetection banks len =
+    let f = redistribute len
+    let notEquals b1 b2 = b1 |> equals b2 |> not 
+    let mutable t = banks |> f
+    let mutable h = t |> f
 
-let testInput = seq { 0; 2; 7; 0; }
+    while h |> notEquals t do
+        t <- f t
+        h <- f (f h) 
 
-let processed = proc testInput (testInput |> Seq.length)
-processed |> fst |> Seq.rev |> Seq.iter printBanks   
-printfn "%A" (processed |> fst |> List.length)
+    let mutable mu = 0
+    h <- banks 
 
+    while h |> notEquals t do
+        t <- f t
+        h <- f h
+        mu <- mu + 1
+    
+    let mutable lambda = 1
+    h <- f t 
+    while h |> notEquals t do
+        h <- f h 
+        lambda <- lambda + 1
+    
+    (mu, lambda)
+
+#time
 let answerPair = proc input len
+#time
 let answerPartOne = answerPair |> fst |> List.length 
 printfn "AnswerPartOne: %d" answerPartOne
-
 let answerPartTwo = answerPair |> snd |> (+) 1
 printfn "AnswerPartTwo: %d" answerPartTwo
+
+#time
+let floydsAnswer = floydsCycleDetection input len
+#time
+
+printfn "mu=%d; lambda=%d" (floydsAnswer |> fst) (floydsAnswer |> snd)
+
+//answerPartFirst = mu + lambda
+//answerToPartSecond = lambda
 
 
 
