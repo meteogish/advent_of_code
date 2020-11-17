@@ -59,18 +59,33 @@ let convertToTree (map: Map<string, Program>) =
     |> toNode 
 
 let findUnbalansedNode tree =
-    let rec fNode (Node (p, w, subTree)) =
+    let rec fNode (Node (_, _, subTree)) =
         match Seq.length (subTree |> Seq.distinctBy getWeight) with
         | 2 -> (subTree |> List.map (fun (Node (p, w, _)) -> (p.Name, p.Weight, w))) :: List.collect fNode subTree
         | _ -> List.collect fNode (subTree |> List.ofSeq)
 
-    tree |> fNode
+    let groups = 
+        tree 
+        |> fNode 
+        |> List.tail 
+        |> List.collect id 
+        |> List.groupBy (fun (_, _, subTreeWeight) -> subTreeWeight)
+
+    let [(firstW, firstItems); (secondW, secondItems)] = groups
+
+    let diff = abs(firstW - secondW)
+
+    let (name, w, subTreeWeight) = 
+        if firstItems |> List.length = 1 then firstItems |> List.head 
+        else secondItems |> List.head
+
+    (name, w - diff, subTreeWeight)
     
 inputLines |> Array.take 4 |> Array.map parseLineToProgram |> printfn "%A"
 let map = inputLines |> convertToMap 
 
 let answerPartOne = findRoot map 
-printfn "%A" answerPartOne
+printfn "AnswerPartOne: %s" answerPartOne.Name
 
-map |> convertToTree |> findUnbalansedNode |> printfn "%A" 
-
+let (_, answerPartTwo, _) = map |> convertToTree |> findUnbalansedNode
+printfn "AnswerPartTwo: %d" answerPartTwo
