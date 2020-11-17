@@ -59,7 +59,7 @@ let mapInstructionLine str =
 let instructions = inputLines |> Array.map mapInstructionLine
 
 let processInstructions () =
-    let folder (acc: Dictionary<string, int>) instruction =
+    let folder (hi: int, acc: Dictionary<string, int>) instruction =
         let get key =
             if acc.ContainsKey key then 
                 acc.[key]
@@ -86,12 +86,17 @@ let processInstructions () =
                 | Dec -> currentValue - instruction.Value
 
             acc.[instruction.Register] <- newValue 
-            acc
+            if newValue > hi then 
+                (newValue, acc)
+            else 
+                (hi, acc)
         else 
-            acc
+            (hi, acc)
 
-    instructions |> Array.fold folder (Dictionary<string, int>(inputLines.Length))
+    instructions |> Array.fold folder (0, Dictionary<string, int>(inputLines.Length))
 
-let answerPartOne = (processInstructions ()).Values |> Seq.max
+let (answerPartTwo, map) = processInstructions ()
+let answerPartOne = map.Values |> Seq.max
 
 printfn "AnswerPartOne: %d" answerPartOne
+printfn "AnswerPartTwo: %d" answerPartTwo
