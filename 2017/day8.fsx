@@ -56,9 +56,7 @@ let mapInstructionLine str =
         ConditionValue = 6 |> get |> int;
     }
 
-let instructions = inputLines |> Array.map mapInstructionLine
-
-let processInstructions () =
+let processInstructions instructions =
     let folder (hi: int, acc: Dictionary<string, int>) instruction =
         let get key =
             if acc.ContainsKey key then 
@@ -95,7 +93,11 @@ let processInstructions () =
 
     instructions |> Array.fold folder (0, Dictionary<string, int>(inputLines.Length))
 
-let (answerPartTwo, map) = processInstructions ()
+let (answerPartTwo, map) = 
+    inputLines 
+    |> Array.map mapInstructionLine
+    |> processInstructions 
+
 let answerPartOne = map.Values |> Seq.max
 
 printfn "AnswerPartOne: %d" answerPartOne
