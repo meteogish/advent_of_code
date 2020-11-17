@@ -21,11 +21,9 @@ let parseLineToProgram =
         
         let m = rx.Match(line);
         let matchChildren = 
-            let str = if m.Groups.Count = 4 then Some (m.Groups.[3]).Value else None
+            let str = if m.Groups.Count = 4 then (m.Groups.[3]).Value else String.Empty
 
-            match str with
-            | Some s -> s.Split(", ") |> List.ofArray 
-            | _ -> List.empty 
+            if String.IsNullOrEmpty(str) then List.Empty else str.Split(", ") |> List.ofArray
 
         //m.Groups.Count |> printfn "Count of groups:%d"
         let name = (m.Groups.[1]).Value
