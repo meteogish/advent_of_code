@@ -10,7 +10,7 @@ printfn "%d" (inputLines |> Array.length)
 
 type Program = { Name: string; Weight: int; Children: string list; Refs: int }
 
-type ProgramTree = Node of Program * int * ProgramTree seq
+type ProgramTree = Node of Program * int * ProgramTree list 
 
 let getWeight (Node (_, weight, _)) = weight
 
@@ -50,7 +50,7 @@ let findRoot (map: Map<string, Program>) =
 
 let convertToTree (map: Map<string, Program>) =
     let rec toNode p = 
-        let childNodes = p.Children |> Seq.map (fun c -> map.[c] |> toNode)
+        let childNodes = p.Children |> List.map (fun c -> map.[c] |> toNode)
         let childsSum = childNodes |> Seq.sumBy getWeight 
         (p, childsSum + p.Weight, childNodes) |> Node
 
@@ -61,8 +61,8 @@ let convertToTree (map: Map<string, Program>) =
 let findUnbalansedNode tree =
     let rec fNode (Node (p, w, subTree)) =
         match Seq.length (subTree |> Seq.distinctBy getWeight) with
-        | 2 -> ((subTree |> Seq.map (fun (Node (p, w, _)) -> (p, w))) :: (Seq.collect fNode subTree |> List.ofSeq)) |> List.ofSeq
-        | _ -> Seq.collect fNode subTree |> List.ofSeq
+        | 2 -> (subTree |> List.map (fun (Node (p, w, _)) -> (p.Name, p.Weight, w))) :: List.collect fNode subTree
+        | _ -> List.collect fNode (subTree |> List.ofSeq)
 
     tree |> fNode
     
