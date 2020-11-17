@@ -67,18 +67,18 @@ let processInstructions () =
                 acc.[key] <- 0
                 0
 
-        let conditionF condition = 
+        let pass condition key v = 
             match condition with
-            | Eq -> fun s v -> s |> get = v
-            | NotEq -> fun s v -> s |> get <> v
-            | Lte -> fun s v -> s |> get <= v
-            | Gte -> fun s v -> s |> get >= v
-            | Lt -> fun s v -> s |> get < v
-            | Gt -> fun s v -> s |> get > v 
+            | Eq -> key |> get = v
+            | NotEq -> key |> get <> v
+            | Lte -> key |> get <= v
+            | Gte -> key |> get >= v
+            | Lt -> key |> get < v
+            | Gt -> key |> get > v 
 
-        let pass = instruction.Condition |> conditionF
+        let passed = pass instruction.Condition instruction.ConditionRegister instruction.ConditionValue
 
-        if pass instruction.ConditionRegister instruction.ConditionValue then
+        if passed then
             let currentValue = instruction.Register |> get 
             let newValue = 
                 match instruction.Instruction with
