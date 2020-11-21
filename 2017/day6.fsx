@@ -1,3 +1,5 @@
+//https://adventofcode.com/2017/day/6
+
 open System.Collections.Generic
 let input =
     (System.IO.File.ReadAllLines("input_day6.txt")

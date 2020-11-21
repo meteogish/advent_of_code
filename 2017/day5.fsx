@@ -1,3 +1,5 @@
+//https://adventofcode.com/2017/day/5
+
 let lines = System.IO.File.ReadAllLines("input_day5.txt")
 
 let nums = lines |> Seq.map int |> Array.ofSeq

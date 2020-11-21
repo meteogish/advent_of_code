@@ -1,3 +1,5 @@
+//https://adventofcode.com/2017/day/2
+
 open System.IO 
 
 let input = """157	564	120	495	194	520	510	618	244	443	471	473	612	149	506	138
