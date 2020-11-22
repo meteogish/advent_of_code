@@ -1,6 +1,4 @@
-//https://adventofcode.com/2017/day/9
-
-open System.Collections.Generic
+//https://adventofcode.com/2017/day/10
 
 let day10PartOne = System.IO.File.ReadAllText("inputs/input_day10.txt").Split(',') |> Array.map int
 let day10PartTwo = [| 17; 31; 73; 47; 23 |] |> Array.append (System.IO.File.ReadAllBytes("inputs/input_day10.txt") |> Array.map int)
@@ -23,13 +21,13 @@ let knotBy state length =
     let mutable left = state.CurrentPosition
     let mutable ml = length
 
-    //printfn "left = %d; state = %A; length = %d;" left state length
     while ml > 1 do 
         let right = (left + ml - 1) % len  
-        //printfn "left: %d; right: %d" left right
+        
         let t = state.Elements.[left]
         state.Elements.[left] <- state.Elements.[right]
         state.Elements.[right] <- t
+        
         left <- (left + 1) % len
         ml <- ml - 2 
 
@@ -43,9 +41,7 @@ let elements state = state.Elements
 
 let knot input repeat state =
     if repeat = 1 then Seq.singleton 1 else { 1 .. repeat } 
-    |> Seq.fold 
-        (fun acc _ -> 
-            input |> Seq.fold knotBy acc) state
+    |> Seq.fold (fun acc _ -> input |> Seq.fold knotBy acc) state
 
 let answerPartOne = 
     initialState () 
@@ -55,12 +51,15 @@ let answerPartOne =
 
 answerPartOne |> printfn "AnswerPartOne: %d"
 
-let sparseHash = initialState () |> knot day10PartTwo 64 |> elements
+let sparseHash = 
+    initialState () 
+    |> knot day10PartTwo 64 
+    |> elements
 
 let denseHash = 
     sparseHash 
     |> Array.chunkBySize 16 
-    |> Array.map (fun block -> block |> Seq.reduce (^^^) |> sprintf "%02x")
+    |> Array.map (Seq.reduce (^^^) >> sprintf "%02x")
     |> String.concat ""
 
 denseHash |> printfn "AnswerPartTwo: %s"
