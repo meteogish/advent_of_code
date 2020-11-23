@@ -19,10 +19,10 @@ let getAnswers results =
     (results |> Seq.last |> third, 
         results |> Seq.maxBy third |> third)
 
-let folder (accX, accY, _) (dirX, dirY) =
-    let (nextX, nextY) = (accX + dirX, accY + dirY)
-    let nextDist = axialDistance (nextX, nextY) (0,0)
-    (nextX, nextY, nextDist) 
+let folder (accQ, accR, _) (dirQ, dirR) =
+    let (nextQ, nextR) = (accQ + dirQ, accR + dirR)
+    let nextDist = axialDistance (nextQ, nextR) (0,0)
+    (nextQ, nextR, nextDist) 
 
 day11 
 |> Seq.map (fun str -> axialMap.[str]) 
