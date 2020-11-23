@@ -35,5 +35,3 @@ items
 |> Seq.fold countIndependentGroups (0, Set.empty)
 |> fst
 |> printfn "AnswerPartTwo: %d" 
-
-
