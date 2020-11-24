@@ -1,7 +1,7 @@
 //https://adventofcode.com/2017/day/10
 
 let day10PartOne = System.IO.File.ReadAllText("inputs/input_day10.txt").Split(',') |> Array.map int
-let day10PartTwo = [| 17; 31; 73; 47; 23 |] |> Array.append (System.IO.File.ReadAllBytes("inputs/input_day10.txt") |> Array.map int)
+let day10Text = System.IO.File.ReadAllText("inputs/input_day10.txt")
 
 type State = {
     Elements: int array;
@@ -43,24 +43,29 @@ let knot input repeat state =
     if repeat = 1 then Seq.singleton 1 else { 1 .. repeat } 
     |> Seq.fold (fun acc _ -> input |> Seq.fold knotBy acc) state
 
+let knotHash (input:string) =
+    let t = input |> Seq.map int |> Array.ofSeq
+    let ints = [| 17; 31; 73; 47; 23 |] |> Array.append t 
+    let sparseHash = 
+        initialState () 
+        |> knot ints 64 
+        |> elements
+
+    let denseHash = 
+        sparseHash 
+        |> Array.chunkBySize 16 
+        |> Array.map (Seq.reduce (^^^) >> sprintf "%02x")
+        |> String.concat "" 
+
+    denseHash
+
 let answerPartOne = 
     initialState () 
     |> knot day10PartOne 1 
     |> elements |> Seq.take 2 
     |> Seq.reduce (*)
 
-answerPartOne |> printfn "AnswerPartOne: %d"
-
-let sparseHash = 
-    initialState () 
-    |> knot day10PartTwo 64 
-    |> elements
-
-let denseHash = 
-    sparseHash 
-    |> Array.chunkBySize 16 
-    |> Array.map (Seq.reduce (^^^) >> sprintf "%02x")
-    |> String.concat ""
-
-denseHash |> printfn "AnswerPartTwo: %s"
+let answers () =
+    answerPartOne |> printfn "AnswerPartOne: %d"
+    knotHash day10Text |> printfn "AnswerPartTwo: %s"
 
