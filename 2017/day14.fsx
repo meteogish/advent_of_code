@@ -11,13 +11,10 @@ let countBitsOfHash hash =
 
 let countBits input i =
     let inp = sprintf "%s-%d" input i
-    let hash = sprintf "%s-%d" input i |> Day10.knotHash
+    let hash = inp |> Day10.knotHash
     
     let countBitsOfHash = countBitsOfHash hash
-    printfn "Inp: %s ; Hash: %s ; BitsCount: %d" inp hash countBitsOfHash
+    //printfn "Inp: %s ; Hash: %s ; BitsCount: %d" inp hash countBitsOfHash
     countBitsOfHash
 
 { 0 .. 127 } |> Seq.sumBy (countBits input) |> printfn "%d"
-
-"a0c2017" |> countBitsOfHash |> printfn "%d"
-"ff" |> countBitsOfHash |> printfn "%d"
