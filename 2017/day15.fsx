@@ -1,3 +1,5 @@
+//https://adventofcode.com/2017/day/15
+
 let inputA = 703u
 let inputB = 516u
 
