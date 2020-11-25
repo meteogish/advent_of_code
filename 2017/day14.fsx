@@ -4,17 +4,53 @@ open System.Linq
 
 let input = "oundnydw"
 
-let countBitsOfHash hash =
-    let ints = hash |> Seq.map (fun c -> System.Byte.Parse (c |> string, System.Globalization.NumberStyles.HexNumber)) |> Array.ofSeq
-    let b = BitArray (ints)
-    b.Cast<bool>() |> Seq.sumBy (fun b -> if b then 1 else 0)
+let width = 128
+let gridCells = { 0 .. width - 1 }
 
-let countBits input i =
-    let inp = sprintf "%s-%d" input i
-    let hash = inp |> Day10.knotHash
-    
-    let countBitsOfHash = countBitsOfHash hash
-    //printfn "Inp: %s ; Hash: %s ; BitsCount: %d" inp hash countBitsOfHash
-    countBitsOfHash
+let getBits input =
+    let toBits c =
+        let hex = System.Convert.ToInt32 (c |> string, 16) 
+        System.Convert.ToString(hex, 2).PadLeft(4, '0')
 
-{ 0 .. 127 } |> Seq.sumBy (countBits input) |> printfn "%d"
+    input |> Seq.collect toBits
+
+let prepareGridBits input =
+    gridCells |> Seq.collect (sprintf "%s-%d" input >> Day10.knotHash >> getBits)
+
+let getNeighbours (i, j) =
+    let previousRow = i - 1
+    let nextRow = i + 1
+    let left = j - 1
+    let right = j + 1
+
+    seq {
+        if previousRow >= 0 then yield (previousRow, j)
+        if nextRow < width then yield (nextRow, j)
+        if left >= 0 then yield (i, left)
+        if right < width then yield (i, right)        
+    }
+
+let bits = prepareGridBits input |> Array.ofSeq
+
+let isSet (i, j) =
+    bits.[i * width + j] = '1'
+
+let rec findFriendsOf set item =
+    if (Set.contains item set) then
+        set
+    else
+        item |> getNeighbours |> Seq.filter isSet |> Seq.fold findFriendsOf (set.Add item)
+
+let rec countConnectedRegions (count, set) point =
+    if Set.contains point set || (point |> isSet |> not) then 
+        (count, set)
+    else 
+        (count + 1, findFriendsOf set point)
+
+let result = 
+    gridCells 
+    |> Seq.allPairs gridCells 
+    |> Seq.fold countConnectedRegions (0, Set.empty) 
+
+result |> snd |> Set.count |> printfn "AnswerPartOne: %d"
+result |> fst |> printfn "AnswerPartTwo: %d"
