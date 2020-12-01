@@ -1,3 +1,5 @@
+//https://adventofcode.com/2017/day/18
+
 open System.Collections.Generic
 
 type Register = Int of int | Char of char
