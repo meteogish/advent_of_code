@@ -21,7 +21,7 @@
 | [Day 16: Permutation Promenade](./2017/day16.fsx) |
 | [Day 17: Spinlock](./2017/day17.fsx) |
 | [Day 18: Duet](./2017/day18.fsx) |
-| [Day 19: A Series of Tubes] |
+| [Day 19: A Series of Tubes](./2017/day19.fsx) |
 | [Day 20: Particle Swarm] |
 | [Day 21: Fractal Art] |
 | [Day 22: Sporifica Virus] |
