@@ -39,26 +39,27 @@ let toParticle i line =
 
 let particles = System.IO.File.ReadAllLines("inputs/input_day20.txt") |> Array.mapi toParticle
 
-let rec simulate count particles =
+let rec simulate transform count particles =
     if count = 0 then
         particles
     else 
-        (particles |> Array.map tick) |> simulate (count - 1)
+        particles 
+        |> transform 
+        |> Array.map tick 
+        |> simulate transform (count - 1)
 
 let origin = Vec3 (0L, 0L, 0L)
 
 particles
-|> simulate 600
+|> simulate id 600
 |> Array.minBy (fun p -> p.Position |> manhattan origin)
 |> fun p -> p.Id |> printfn "AnswerPartOne: %d"
 
-
-let folder particles _ =
+let removeDuplicates particles = 
     particles
     |> Array.filter (fun p -> particles |> Array.exists (fun p2 -> p.Id <> p2.Id && p.Position |> equals p2.Position) |> not)
-    |> simulate 1
 
-{ 0.. 600 }
-|> Seq.fold folder particles
+particles
+|> simulate removeDuplicates 600
 |> Seq.length 
 |> printfn "AnswerPartTwo: %d"
