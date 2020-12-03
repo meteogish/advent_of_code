@@ -22,7 +22,7 @@
 | [Day 17: Spinlock](./2017/day17.fsx) |
 | [Day 18: Duet](./2017/day18.fsx) |
 | [Day 19: A Series of Tubes](./2017/day19.fsx) |
-| [Day 20: Particle Swarm] |
+| [Day 20: Particle Swarm](./2017/day20.fsx)|
 | [Day 21: Fractal Art] |
 | [Day 22: Sporifica Virus] |
 | [Day 23: Coprocessor Conflagration] |
