@@ -26,5 +26,5 @@
 | [Day 21: Fractal Art] |
 | [Day 22: Sporifica Virus](./2017/day22.fsx)|
 | [Day 23: Coprocessor Conflagration](./2017/day23.fsx)|
-| [Day 24: Electromagnetic Moat] |
+| [Day 24: Electromagnetic Moat](./2017/day24.fsx)|
 | [Day 25: The Halting Problem] |
