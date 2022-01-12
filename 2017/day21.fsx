@@ -13,24 +13,30 @@ let splitIntoSubGrids convert (grid:string, size) =
         let subSizeSquared = subSize * subSize
         let countOfSubGrids = grid.Length / subSizeSquared
         let countOfSubGridsInOneRow = size / subSize
+        
+        printfn "_splitIntoSubGrids -> subSizeAfterConvert: %d; subSize: %d; countOfSubGrids: %d; countOfSubGridsInOneRow: %d;" subSizeAfterConvert subSize countOfSubGrids countOfSubGridsInOneRow
 
         let toSubGrid subGridI =
-            let startingIndex = subGridI * subSizeSquared - (subSize * (subGridI % subSize))
+            //let startingIndex = subGridI * subSizeSquared - (subSize * (subGridI % subSize))
+            let startingIndex = (Math.Floor(subGridI / countOfSubGridsInOneRow |> float) |> int) * 2 * size + (subGridI % countOfSubGridsInOneRow) * subSize
             printfn "subGridI %i, startingIndex: %i" subGridI startingIndex
             
             { 0..subSize - 1}
             |> Seq.map (fun i -> 
-                let curreStInd = startingIndex + i * 2 * subSize
+                //let curreStInd = startingIndex + i * 2 * subSize
+                let curreStInd = startingIndex + i * size
                 printfn "currentStInd: %i" curreStInd
                 grid.Substring (curreStInd, subSize))
             |> String.concat ""
             |> convert
-            |> fun gr -> (gr, subSize)
+            |> fun gr -> (gr, subSizeAfterConvert)
         
-        let gmergeSubGrids (subGrids: Grid seq) =
+        let gmergeSubGrids (subGrids: Grid list) =
+            printfn "gmergeSubGrids: grids.COunt: %d" subGrids.Length 
+
             let rec _toSingeRow subGridsInOneRow i result =
-                printfn "merging, subGroup: %A, i: %i, result:\n%s\n" subGridsInOneRow i result
                 if i = subSizeAfterConvert then
+                    printfn "merging, subGroup: %A, i: %i, result:\n%s\n" subGridsInOneRow i result
                     result
                 else
                     let next = 
@@ -40,9 +46,8 @@ let splitIntoSubGrids convert (grid:string, size) =
                     
                     _toSingeRow subGridsInOneRow (i + 1) (result + next)
 
-            printfn "count of subGrids in one row: %i" countOfSubGridsInOneRow
             subGrids 
-            |> Seq.windowed countOfSubGridsInOneRow 
+            |> Seq.chunkBySize countOfSubGridsInOneRow 
             |> Seq.map (fun subGroup -> _toSingeRow subGroup 0 "")
             |> String.concat ""
             
@@ -50,7 +55,7 @@ let splitIntoSubGrids convert (grid:string, size) =
             let res = grid |> convert
             let s = if res |> String.length = 9 then 3 else 4
             (res, s)
-        else { 0..countOfSubGrids - 1 } |> Seq.map toSubGrid |> gmergeSubGrids |> fun m -> (m, countOfSubGridsInOneRow * subSizeAfterConvert)
+        else { 0..countOfSubGrids - 1 } |> Seq.map toSubGrid |> List.ofSeq |> gmergeSubGrids |> fun m -> (m, countOfSubGridsInOneRow * subSizeAfterConvert)
 
     if size % 2 = 0 then 
         _splitIntoSubGrids 2
@@ -155,8 +160,9 @@ let rec iterate i max grid =
 
 //rulesMap |> Map.count |> printfn "%i"
 //rulesMap |> Map.toArray |> printfn "%A"
-
-iterate 0 5 startingGrid  |> printfn "end result %A"
+{0..4} |> List.ofSeq |> printfn "seq test: %A"
+let endResult = iterate 0 5 startingGrid  
+endResult |> fst |> (fun s -> s.Replace(".", "") |> String.length) |> printfn "end result %A"
 //splitIntoSubGrids convert startingGrid |> printfn "%A"
 
 //"../.. => .##/..#/##." |> convertLine |> printfn "%A"
