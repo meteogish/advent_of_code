@@ -18,7 +18,9 @@ let splitIntoSubGrids convert (grid:string, size) =
 
         let toSubGrid subGridI =
             //let startingIndex = subGridI * subSizeSquared - (subSize * (subGridI % subSize))
-            let startingIndex = (Math.Floor(subGridI / countOfSubGridsInOneRow |> float) |> int) * 2 * size + (subGridI % countOfSubGridsInOneRow) * subSize
+            let startingIndex = 
+                (Math.Floor(subGridI / countOfSubGridsInOneRow |> float) |> int) * subSize * size 
+                + (subGridI % countOfSubGridsInOneRow) * subSize
             printfn "subGridI %i, startingIndex: %i" subGridI startingIndex
             
             { 0..subSize - 1}
@@ -160,9 +162,12 @@ let rec iterate i max grid =
 
 //rulesMap |> Map.count |> printfn "%i"
 //rulesMap |> Map.toArray |> printfn "%A"
-{0..4} |> List.ofSeq |> printfn "seq test: %A"
-let endResult = iterate 0 5 startingGrid  
+let endResult = iterate 0 18 startingGrid  
 endResult |> fst |> (fun s -> s.Replace(".", "") |> String.length) |> printfn "end result %A"
+
+//answer to part 1 is 203
+//answer to part 2 is 3342470
+
 //splitIntoSubGrids convert startingGrid |> printfn "%A"
 
 //"../.. => .##/..#/##." |> convertLine |> printfn "%A"
