@@ -23,7 +23,7 @@
 | [Day 18: Duet](./2017/day18.fsx) |
 | [Day 19: A Series of Tubes](./2017/day19.fsx) |
 | [Day 20: Particle Swarm](./2017/day20.fsx)|
-| [Day 21: Fractal Art] |
+| [Day 21: Fractal Art](./2017/day21.fsx)|
 | [Day 22: Sporifica Virus](./2017/day22.fsx)|
 | [Day 23: Coprocessor Conflagration](./2017/day23.fsx)|
 | [Day 24: Electromagnetic Moat](./2017/day24.fsx)|

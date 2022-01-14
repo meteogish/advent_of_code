@@ -1,5 +1,8 @@
 open System
 
+
+// this file is not refactored yet.
+
 type Grid = string*int
 
 type Rule = Grid * Grid
