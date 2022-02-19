@@ -77,7 +77,6 @@ let (_, consecutiveNumbers) = allNumbers |> Seq.fold (folder) (0I, new Window())
 let (min, max) = 
     consecutiveNumbers 
     |> Seq.fold (fun (minSoFar, maxSoFar) nextNumber -> 
-        printfn "(%A, %A)" minSoFar maxSoFar
         if minSoFar = 0I || nextNumber < minSoFar then 
             (nextNumber, maxSoFar)
         else if maxSoFar = 0I || nextNumber > maxSoFar then
@@ -89,8 +88,3 @@ let resultPart2 = min + max
 
 printfn "Result part 1: %A" resultPart1 
 printfn "Result part 2: %A" resultPart2 
-
-
-    
-
-
