@@ -59,3 +59,8 @@
 | [Day 23: Crab Cups](./2020/day23.fsx) |
 | [Day 24: Lobby Layout](./2020/day24.fsx) |
 | [Day 25: Combo Breaker](./2020/day25.fsx) |
+
+## [Year 2022](./2022)
+| |
+| - |
+| [Day 1: Calorie Counting](./2022/day1.fsx) |
