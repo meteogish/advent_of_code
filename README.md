@@ -64,3 +64,6 @@
 | |
 | - |
 | [Day 1: Calorie Counting](./2022/day1.fsx) |
+| [Day 2: Rock Paper Scissors](./2022/day2.fsx) |
+| [Day 3: Rucksack Reorganization](./2022/day3.fsx) |
+| [Day 4: Camp Cleanup](./2022/day4.fsx) |
