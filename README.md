@@ -2,62 +2,65 @@
 
 ## [Year 2017](./fsharp/2017)
 
-| | |
-| - | - |
-| [Day 1: Inverse Captcha](https://adventofcode.com/2017/day/1) | [F#](./fsharp/2017/day1.fsx) |
-| [Day 2: Corruption Checksum](https://adventofcode.com/2017/day/2) | [F#](./fsharp/2017/day2.fsx) |
-| [Day 3: Spiral Memory](https://adventofcode.com/2017/day/3) | [F#](./fsharp/2017/day3.fsx) |
-| [Day 4: High-Entropy Passphrases](https://adventofcode.com/2017/day/4) | [F#](./fsharp/2017/day4.fsx) |
-| [Day 5: A Maze of Twisty Trampolines, All Alike](https://adventofcode.com/2017/day/5) | [F#](./fsharp/2017/day5.fsx) |
-| [Day 6: Memory Reallocation](https://adventofcode.com/2017/day/6) | [F#](./fsharp/2017/day6.fsx) |
-| [Day 7: Recursive Circus](https://adventofcode.com/2017/day/7) | [F#](./fsharp/2017/day7.fsx) |
-| [Day 8: I Heard You Like Registers](https://adventofcode.com/2017/day/8) | [F#](./fsharp/2017/day8.fsx) |
-| [Day 9: Stream Processing](https://adventofcode.com/2017/day/9) | [F#](./fsharp/2017/day9.fsx) |
-| [Day 10: Knot Hash](https://adventofcode.com/2017/day/10) | [F#](./fsharp/2017/day10.fsx) |
-| [Day 11: Hex Ed](https://adventofcode.com/2017/day/11) | [F#](./fsharp/2017/day11.fsx) |
-| [Day 12: Digital Plumber](https://adventofcode.com/2017/day/12) | [F#](./fsharp/2017/day12.fsx) |
-| [Day 13: Packet Scanners](https://adventofcode.com/2017/day/13) | [F#](./fsharp/2017/day13.fsx) |
-| [Day 14: Disk Defragmentation](https://adventofcode.com/2017/day/14) | [F#](./fsharp/2017/day14.fsx) |
-| [Day 15: Dueling Generators](https://adventofcode.com/2017/day/15) | [F#](./fsharp/2017/day15.fsx) |
-| [Day 16: Permutation Promenade](https://adventofcode.com/2017/day/16) | [F#](./fsharp/2017/day16.fsx) |
-| [Day 17: Spinlock](https://adventofcode.com/2017/day/17) | [F#](./fsharp/2017/day17.fsx) |
-| [Day 18: Duet](https://adventofcode.com/2017/day/18) | [F#](./fsharp/2017/day18.fsx) |
-| [Day 19: A Series of Tubes](https://adventofcode.com/2017/day/19) | [F#](./fsharp/2017/day19.fsx) |
-| [Day 20: Particle Swarm](https://adventofcode.com/2017/day/20) | [F#](./fsharp/2017/day20.fsx) |
-| [Day 21: Fractal Art](https://adventofcode.com/2017/day/21) | [F#](./fsharp/2017/day21.fsx) |
-| [Day 22: Sporifica Virus](https://adventofcode.com/2017/day/22) | [F#](./fsharp/2017/day22.fsx) |
-| [Day 23: Coprocessor Conflagration](https://adventofcode.com/2017/day/23) | [F#](./fsharp/2017/day23.fsx) |
-| [Day 24: Electromagnetic Moat](https://adventofcode.com/2017/day/24) | [F#](./fsharp/2017/day24.fsx) |
-| [Day 25: The Halting Problem](https://adventofcode.com/2017/day/25) | [F#](./fsharp/2017/day25.fsx) |
+| Day                                                                                   | Lang                          |
+|---------------------------------------------------------------------------------------|-------------------------------|
+| [Day 1: Inverse Captcha](https://adventofcode.com/2017/day/1)                         | [F#](./fsharp/2017/day1.fsx)  |
+| [Day 2: Corruption Checksum](https://adventofcode.com/2017/day/2)                     | [F#](./fsharp/2017/day2.fsx)  |
+| [Day 3: Spiral Memory](https://adventofcode.com/2017/day/3)                           | [F#](./fsharp/2017/day3.fsx)  |
+| [Day 4: High-Entropy Passphrases](https://adventofcode.com/2017/day/4)                | [F#](./fsharp/2017/day4.fsx)  |
+| [Day 5: A Maze of Twisty Trampolines, All Alike](https://adventofcode.com/2017/day/5) | [F#](./fsharp/2017/day5.fsx)  |
+| [Day 6: Memory Reallocation](https://adventofcode.com/2017/day/6)                     | [F#](./fsharp/2017/day6.fsx)  |
+| [Day 7: Recursive Circus](https://adventofcode.com/2017/day/7)                        | [F#](./fsharp/2017/day7.fsx)  |
+| [Day 8: I Heard You Like Registers](https://adventofcode.com/2017/day/8)              | [F#](./fsharp/2017/day8.fsx)  |
+| [Day 9: Stream Processing](https://adventofcode.com/2017/day/9)                       | [F#](./fsharp/2017/day9.fsx)  |
+| [Day 10: Knot Hash](https://adventofcode.com/2017/day/10)                             | [F#](./fsharp/2017/day10.fsx) |
+| [Day 11: Hex Ed](https://adventofcode.com/2017/day/11)                                | [F#](./fsharp/2017/day11.fsx) |
+| [Day 12: Digital Plumber](https://adventofcode.com/2017/day/12)                       | [F#](./fsharp/2017/day12.fsx) |
+| [Day 13: Packet Scanners](https://adventofcode.com/2017/day/13)                       | [F#](./fsharp/2017/day13.fsx) |
+| [Day 14: Disk Defragmentation](https://adventofcode.com/2017/day/14)                  | [F#](./fsharp/2017/day14.fsx) |
+| [Day 15: Dueling Generators](https://adventofcode.com/2017/day/15)                    | [F#](./fsharp/2017/day15.fsx) |
+| [Day 16: Permutation Promenade](https://adventofcode.com/2017/day/16)                 | [F#](./fsharp/2017/day16.fsx) |
+| [Day 17: Spinlock](https://adventofcode.com/2017/day/17)                              | [F#](./fsharp/2017/day17.fsx) |
+| [Day 18: Duet](https://adventofcode.com/2017/day/18)                                  | [F#](./fsharp/2017/day18.fsx) |
+| [Day 19: A Series of Tubes](https://adventofcode.com/2017/day/19)                     | [F#](./fsharp/2017/day19.fsx) |
+| [Day 20: Particle Swarm](https://adventofcode.com/2017/day/20)                        | [F#](./fsharp/2017/day20.fsx) |
+| [Day 21: Fractal Art](https://adventofcode.com/2017/day/21)                           | [F#](./fsharp/2017/day21.fsx) |
+| [Day 22: Sporifica Virus](https://adventofcode.com/2017/day/22)                       | [F#](./fsharp/2017/day22.fsx) |
+| [Day 23: Coprocessor Conflagration](https://adventofcode.com/2017/day/23)             | [F#](./fsharp/2017/day23.fsx) |
+| [Day 24: Electromagnetic Moat](https://adventofcode.com/2017/day/24)                  | [F#](./fsharp/2017/day24.fsx) |
+| [Day 25: The Halting Problem](https://adventofcode.com/2017/day/25)                   | [F#](./fsharp/2017/day25.fsx) |
+
 
 ## [Year 2020](./fsharp/2020)
-| |
-| - |
-| [Day 1: Report Repair](./fsharp/2020/day1.fsx) |
-| [Day 2: Password Philosophy](./fsharp/2020/day2.fsx) |
-| [Day 3: Toboggan Trajectory](./fsharp/2020/day3.fsx) |
-| [Day 4: Passport Processing](./fsharp/2020/day4.fsx) |
-| [Day 5: Binary Boarding](./fsharp/2020/day5.fsx) |
-| [Day 6: Custom Customs]() |
-| [Day 7: Handy Haversacks]() |
-| [Day 8: Handheld Halting]() |
-| [Day 9: Encoding Error](./fsharp/2020/day9.fsx) |
-| [Day 10: Adapter Array](./fsharp/2020/day10.fsx) |
-| [Day 11: Seating System]() |
-| [Day 12: Rain Risk]() |
-| [Day 13: Shuttle Search]() |
-| [Day 14: Docking Data]() |
-| [Day 15: Rambunctious Recitation]() |
-| [Day 16: Ticket Translation]() |
-| [Day 17: Conway Cubes]() |
-| [Day 18: Operation Order]() |
-| [Day 19: Monster Messages]() |
-| [Day 20: Jurassic Jigsaw]() |
-| [Day 21: Allergen Assessment]() |
-| [Day 22: Crab Combat]() |
-| [Day 23: Crab Cups]() |
-| [Day 24: Lobby Layout]() |
-| [Day 25: Combo Breaker]() |
+
+| Day                                                                     | Lang                          |
+|-------------------------------------------------------------------------|-------------------------------|
+| [Day 1: Report Repair](https://adventofcode.com/2020/day/1)             | [F#](./fsharp/2020/day1.fsx)  |
+| [Day 2: Password Philosophy](https://adventofcode.com/2020/day/2)       | [F#](./fsharp/2020/day2.fsx)  |
+| [Day 3: Toboggan Trajectory](https://adventofcode.com/2020/day/3)       | [F#](./fsharp/2020/day3.fsx)  |
+| [Day 4: Passport Processing](https://adventofcode.com/2020/day/4)       | [F#](./fsharp/2020/day4.fsx)  |
+| [Day 5: Binary Boarding](https://adventofcode.com/2020/day/5)           | [F#](./fsharp/2020/day5.fsx)  |
+| [Day 6: Custom Customs](https://adventofcode.com/2020/day/6)            |                               |
+| [Day 7: Handy Haversacks](https://adventofcode.com/2020/day/7)          |                               |
+| [Day 8: Handheld Halting](https://adventofcode.com/2020/day/8)          |                               |
+| [Day 9: Encoding Error](https://adventofcode.com/2020/day/9)            | [F#](./fsharp/2020/day9.fsx)  |
+| [Day 10: Adapter Array](https://adventofcode.com/2020/day/10)           | [F#](./fsharp/2020/day10.fsx) |
+| [Day 11: Seating System](https://adventofcode.com/2020/day/11)          |                               |
+| [Day 12: Rain Risk](https://adventofcode.com/2020/day/12)               |                               |
+| [Day 13: Shuttle Search](https://adventofcode.com/2020/day/13)          |                               |
+| [Day 14: Docking Data](https://adventofcode.com/2020/day/14)            |                               |
+| [Day 15: Rambunctious Recitation](https://adventofcode.com/2020/day/15) |                               |
+| [Day 16: Ticket Translation](https://adventofcode.com/2020/day/16)      |                               |
+| [Day 17: Conway Cubes](https://adventofcode.com/2020/day/17)            |                               |
+| [Day 18: Operation Order](https://adventofcode.com/2020/day/18)         |                               |
+| [Day 19: Monster Messages](https://adventofcode.com/2020/day/19)        |                               |
+| [Day 20: Jurassic Jigsaw](https://adventofcode.com/2020/day/20)         |                               |
+| [Day 21: Allergen Assessment](https://adventofcode.com/2020/day/21)     |                               |
+| [Day 22: Crab Combat](https://adventofcode.com/2020/day/22)             |                               |
+| [Day 23: Crab Cups](https://adventofcode.com/2020/day/23)               |                               |
+| [Day 24: Lobby Layout](https://adventofcode.com/2020/day/24)            |                               |
+| [Day 25: Combo Breaker](https://adventofcode.com/2020/day/25)           |                               |
+
 
 ## [Year 2022](./fsharp/2022)
 | |
