@@ -74,7 +74,7 @@
 | [Day 7: No Space Left On Device](https://adventofcode.com/2022/day/7)    | [F#](./fsharp/2022/day7.fsx)            |
 | [Day 8: Treetop Tree House](https://adventofcode.com/2022/day/8)         | [F#](./fsharp/2022/day8.fsx)            |
 | [Day 9: Rope Bridge](https://adventofcode.com/2022/day/9)                | [Go](./go-solutions/2022/day09/main.go) |
-| [Day 10: Cathode-Ray Tube](https://adventofcode.com/2022/day/10)         |                                         |
+| [Day 10: Cathode-Ray Tube](https://adventofcode.com/2022/day/10)         | [Go](./go-solutions/2022/day10/main.go) |
 | [Day 11: Monkey in the Middle](https://adventofcode.com/2022/day/11)     |                                         |
 | [Day 12: Hill Climbing Algorithm](https://adventofcode.com/2022/day/12)  |                                         |
 | [Day 13: Distress Signal](https://adventofcode.com/2022/day/13)          |                                         |
