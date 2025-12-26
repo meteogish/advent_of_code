@@ -19,6 +19,10 @@ type move struct {
 	c   int
 }
 
+type knot [2]int
+
+type rope []knot
+
 func readInput(path string) (input []move, err error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -46,52 +50,22 @@ func main() {
 		fmt.Println(err)
 	}
 
-	fmt.Println("Part 1: ", part0(input, 10))
+	bothPartsAtOnce(input)
 }
 
-func part1(input []move) int {
+func (r *rope) movehead(step [2]int) {
+	head := &(*r)[0]
 
-	var head, tail [2]int
+	head[0] += step[0]
+	head[1] += step[1]
+	knots_len := len(*r)
 
-	visited := map[[2]int]bool{
-		{0, 0}: true,
+	for i := 0; i < knots_len-1; i++ {
+		adjust_pair(&(*r)[i], &(*r)[i+1])
 	}
-
-	for _, move := range input {
-
-		step := steps[move.dir]
-		for move.c > 0 {
-			head[0] += step[0]
-			head[1] += step[1]
-
-			colDiff := head[0] - tail[0]
-			rowDiff := head[1] - tail[1]
-
-			if colDiff > 1 || colDiff < -1 {
-				tail[0] += colDiff / 2
-				if rowDiff != 0 {
-					tail[1] += rowDiff
-				}
-			}
-
-			if rowDiff > 1 || rowDiff < -1 {
-				tail[1] += rowDiff / 2
-
-				if colDiff != 0 {
-					tail[0] += colDiff
-				}
-			}
-
-			visited[tail] = true
-
-			move.c -= 1
-		}
-	}
-
-	return len(visited)
 }
 
-func recalc(head, tail *[2]int) {
+func adjust_pair(head, tail *knot) {
 	colDiff := head[0] - tail[0]
 	rowDiff := head[1] - tail[1]
 
@@ -110,46 +84,46 @@ func recalc(head, tail *[2]int) {
 	}
 }
 
-func part0(input []move, knots_len int) int {
-	knots := make([][2]int, knots_len)
+func bothPartsAtOnce(input []move) {
+	rope_len := 10
+	rope := make(rope, rope_len)
 
-	head := &knots[0]
-	tail := &knots[knots_len-1]
+	tail := &rope[rope_len-1]
 
-	visited := map[[2]int]bool{
-		{0, 0}: true,
+	visited := [2]map[knot]bool{
+		//Part 1 - Second knot - right after the head
+		{
+			{0, 0}: true,
+		},
+		//Part 2 - Tail knot
+		{
+			{0, 0}: true,
+		},
 	}
 
 	for _, move := range input {
-		// fmt.Println()
-		// fmt.Println("Move: ", move)
-		// fmt.Println()
+		// fmt.Println("\nMove: ", move)
 
 		step := steps[move.dir]
 		for move.c > 0 {
-			head[0] += step[0]
-			head[1] += step[1]
-
-			for i := 0; i < knots_len-1; i++ {
-				recalc(&knots[i], &knots[i+1])
-				//fmt.Println("recalc knot ", i, "State: ", knots)
-			}
-
-			visited[*tail] = true
+			rope.movehead(step)
+			visited[0][rope[1]] = true
+			visited[1][*tail] = true
 
 			move.c -= 1
 		}
 
 		// fmt.Println()
-		// fmt.Println("Knots: ", knots)
+		// fmt.Println("Knots: ", rope)
 		// fmt.Println()
-		// draw(knots)
+		// draw(rope)
 	}
 
-	return len(visited)
+	fmt.Println(len(visited[0]))
+	fmt.Println(len(visited[1]))
 }
 
-func draw(knots [][2]int) {
+func draw(knots rope) {
 	for row := -20; row < 20; row++ {
 		for col := -20; col < 20; col++ {
 			p := [2]int{col, row}
