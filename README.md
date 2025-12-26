@@ -1,6 +1,6 @@
 ## My [Advent Of Code](https://adventofcode.com/) Solutions
 
-## [Year 2017](./fsharp/2017)
+## Year 2017
 
 | Day                                                                                   | Lang                          |
 |---------------------------------------------------------------------------------------|-------------------------------|
@@ -31,7 +31,7 @@
 | [Day 25: The Halting Problem](https://adventofcode.com/2017/day/25)                   | [F#](./fsharp/2017/day25.fsx) |
 
 
-## [Year 2020](./fsharp/2020)
+## Year 2020
 
 | Day                                                                     | Lang                          |
 |-------------------------------------------------------------------------|-------------------------------|
@@ -62,31 +62,32 @@
 | [Day 25: Combo Breaker](https://adventofcode.com/2020/day/25)           |                               |
 
 
-## [Year 2022](./fsharp/2022)
-| |
-| - |
-| [Day 1: Calorie Counting](./fsharp/2022/day1.fsx) |
-| [Day 2: Rock Paper Scissors](./fsharp/2022/day2.fsx) |
-| [Day 3: Rucksack Reorganization](./fsharp/2022/day3.fsx) |
-| [Day 4: Camp Cleanup](./fsharp/2022/day4.fsx) |
-| [Day 5: Supply Stacks](./fsharp/2022/day5.fsx) |
-| [Day 6: Tuning Trouble](./fsharp/2022/day6.fsx) |
-| [Day 7: No Space Left On Device](./fsharp/2022/day7.fsx) |
-| [Day 8: Treetop Tree House](./fsharp/2022/day8.fsx) |
-| [Day 9: Rope Bridge]() |
-| [Day 10: Cathode-Ray Tube]() |
-| [Day 11: Monkey in the Middle]() |
-| [Day 12: Hill Climbing Algorithm]() |
-| [Day 13: Distress Signal]() |
-| [Day 14: Regolith Reservoir]() |
-| [Day 15: Beacon Exclusion Zone]() |
-| [Day 16: Proboscidea Volcanium]() |
-| [Day 17: Pyroclastic Flow]() |
-| [Day 18: Boiling Boulders]() |
-| [Day 19: Not Enough Minerals]() |
-| [Day 20: Grove Positioning System]() |
-| [Day 21: Monkey Math]() |
-| [Day 22: Monkey Map]() |
-| [Day 23: Unstable Diffusion]() |
-| [Day 24: Blizzard Basin]() |
-| [Day 25: Full of Hot Air]() |
+## Year 2022
+| Day                                                                      | Lang                                    |
+|--------------------------------------------------------------------------|-----------------------------------------|
+| [Day 1: Calorie Counting](https://adventofcode.com/2022/day/1)           | [F#](./fsharp/2022/day1.fsx)            |
+| [Day 2: Rock Paper Scissors](https://adventofcode.com/2022/day/2)        | [F#](./fsharp/2022/day2.fsx)            |
+| [Day 3: Rucksack Reorganization](https://adventofcode.com/2022/day/3)    | [F#](./fsharp/2022/day3.fsx)            |
+| [Day 4: Camp Cleanup](https://adventofcode.com/2022/day/4)               | [F#](./fsharp/2022/day4.fsx)            |
+| [Day 5: Supply Stacks](https://adventofcode.com/2022/day/5)              | [F#](./fsharp/2022/day5.fsx)            |
+| [Day 6: Tuning Trouble](https://adventofcode.com/2022/day/6)             | [F#](./fsharp/2022/day6.fsx)            |
+| [Day 7: No Space Left On Device](https://adventofcode.com/2022/day/7)    | [F#](./fsharp/2022/day7.fsx)            |
+| [Day 8: Treetop Tree House](https://adventofcode.com/2022/day/8)         | [F#](./fsharp/2022/day8.fsx)            |
+| [Day 9: Rope Bridge](https://adventofcode.com/2022/day/9)                | [Go](./go-solutions/2022/day09/main.go) |
+| [Day 10: Cathode-Ray Tube](https://adventofcode.com/2022/day/10)         |                                         |
+| [Day 11: Monkey in the Middle](https://adventofcode.com/2022/day/11)     |                                         |
+| [Day 12: Hill Climbing Algorithm](https://adventofcode.com/2022/day/12)  |                                         |
+| [Day 13: Distress Signal](https://adventofcode.com/2022/day/13)          |                                         |
+| [Day 14: Regolith Reservoir](https://adventofcode.com/2022/day/14)       |                                         |
+| [Day 15: Beacon Exclusion Zone](https://adventofcode.com/2022/day/15)    |                                         |
+| [Day 16: Proboscidea Volcanium](https://adventofcode.com/2022/day/16)    |                                         |
+| [Day 17: Pyroclastic Flow](https://adventofcode.com/2022/day/17)         |                                         |
+| [Day 18: Boiling Boulders](https://adventofcode.com/2022/day/18)         |                                         |
+| [Day 19: Not Enough Minerals](https://adventofcode.com/2022/day/19)      |                                         |
+| [Day 20: Grove Positioning System](https://adventofcode.com/2022/day/20) |                                         |
+| [Day 21: Monkey Math](https://adventofcode.com/2022/day/21)              |                                         |
+| [Day 22: Monkey Map](https://adventofcode.com/2022/day/22)               |                                         |
+| [Day 23: Unstable Diffusion](https://adventofcode.com/2022/day/23)       |                                         |
+| [Day 24: Blizzard Basin](https://adventofcode.com/2022/day/24)           |                                         |
+| [Day 25: Full of Hot Air](https://adventofcode.com/2022/day/25)          |                                         |
+
