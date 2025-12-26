@@ -25,7 +25,7 @@ let getTitlesMarkDown year =
     |> Async.RunSynchronously 
     |> Seq.map (toMd year)
     
-getTitlesMarkDown 2017
-|> Seq.append [ "| | |" ; "| - | - |" ] 
+getTitlesMarkDown 2022
+|> Seq.append [ "| Day | Lang |" ; "| - | - |" ] 
 |> String.concat "\n" 
 |> printfn "%s"
