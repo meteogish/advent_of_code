@@ -10,9 +10,9 @@ import (
 )
 
 type monkey struct {
-	starting_items []int
-	operation      func(int) int
-	test           [3]int // { divisible by, if true monkey, if false monkey }
+	starting_items []int64
+	operation      func(int64) int64
+	test           [3]int64 // { divisible by, if true monkey, if false monkey }
 }
 
 func parseInput(path string) (monkeys []monkey, err error) {
@@ -37,13 +37,13 @@ func parseInput(path string) (monkeys []monkey, err error) {
 		staring_items_line := lines[1]
 		items_start := bytes.IndexByte(staring_items_line, ':') + 2
 		items := bytes.Split(staring_items_line[items_start:], []byte{','})
-		starting_items := make([]int, len(items))
+		starting_items := make([]int64, len(items))
 		for i, itm := range items {
 			c, err := strconv.Atoi(strings.TrimSpace(string(itm)))
 			if err != nil {
 				return nil, err
 			}
-			starting_items[i] = c
+			starting_items[i] = int64(c)
 		}
 
 		// Operation: new = old + 4
@@ -52,17 +52,17 @@ func parseInput(path string) (monkeys []monkey, err error) {
 		opByte := operation_line[operation_start]
 		operandStr := string(bytes.TrimSpace(operation_line[operation_start+1:]))
 
-		var operation func(int) int
+		var operation func(int64) int64
 
 		fmt.Println("Operand: ", operandStr)
 		if operandStr == "old" {
 			switch opByte {
 			case '*':
-				operation = func(x int) int {
+				operation = func(x int64) int64 {
 					return x * x
 				}
 			case '+':
-				operation = func(x int) int {
+				operation = func(x int64) int64 {
 					return x + x
 				}
 			default:
@@ -74,14 +74,16 @@ func parseInput(path string) (monkeys []monkey, err error) {
 				return nil, err
 			}
 
+			operand64 := int64(operand)
+
 			switch opByte {
 			case '*':
-				operation = func(x int) int {
-					return x * operand
+				operation = func(x int64) int64 {
+					return x * operand64
 				}
 			case '+':
-				operation = func(x int) int {
-					return x + operand
+				operation = func(x int64) int64 {
+					return x + operand64
 				}
 			default:
 				operation = nil
@@ -95,7 +97,7 @@ func parseInput(path string) (monkeys []monkey, err error) {
 		true_line := lines[4][bytes.LastIndexByte(lines[4], ' '):]
 		false_line := lines[5][bytes.LastIndexByte(lines[5], ' '):]
 
-		test := [3]int{}
+		test := [3]int64{}
 
 		for i, x := range [][]byte{div_by_line, true_line, false_line} {
 			val, err := strconv.Atoi(string(bytes.TrimSpace(x)))
@@ -103,7 +105,7 @@ func parseInput(path string) (monkeys []monkey, err error) {
 				return nil, err
 			}
 
-			test[i] = val
+			test[i] = int64(val)
 		}
 
 		monkeys = append(monkeys, monkey{
@@ -117,21 +119,22 @@ func parseInput(path string) (monkeys []monkey, err error) {
 }
 
 func main() {
-	input, err := parseInput("input")
+	input, err := parseInput("test")
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Println(input)
 
-	part1(input)
+	//part(input, 20, func(val int64) int64 { return val / 3 })
+	part(input, 10_000, func(val int64) int64 { return val })
 }
 
-func part1(input []monkey) {
+func part(input []monkey, rounds int, conv func(int64) int64) {
 
-	activity := make([]int, len(input))
+	activity := make([]int64, len(input))
 
-	for round := range 20 {
+	for round := range rounds {
 		//fmt.Println("Round ", round+1)
 
 		for i := range len(input) {
@@ -143,7 +146,7 @@ func part1(input []monkey) {
 				//fmt.Println("Monkey inspects an item with a worry level of ", old)
 				new := curr.operation(old)
 				//fmt.Println("Worry level is now: ", new)
-				new = new / 3
+				new = conv(new)
 				//fmt.Println("Monkey gets bored with item. Worry level is divided by 3 to ", new)
 
 				var next_monkey *monkey
@@ -162,7 +165,7 @@ func part1(input []monkey) {
 
 				//fmt.Println()
 			}
-			curr.starting_items = []int{}
+			curr.starting_items = []int64{}
 			fmt.Println()
 		}
 		fmt.Printf("After Round %d \n", round+1)
