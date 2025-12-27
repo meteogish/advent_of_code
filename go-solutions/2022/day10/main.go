@@ -112,5 +112,5 @@ func part2(input []instruction) {
 		r += op.value
 	}
 
-	fmt.Printf(bob.String())
+	fmt.Printf("%s", bob.String())
 }
