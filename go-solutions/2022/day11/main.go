@@ -124,14 +124,14 @@ func main() {
 
 	fmt.Println(input)
 
-	part1(input)
+	part1(input, 20, func(x int) int { return x / 3 })
 }
 
-func part1(input []monkey) {
+func part1(input []monkey, rounds int, conv func(int) int) {
 
 	activity := make([]int, len(input))
 
-	for round := range 20 {
+	for round := range rounds {
 		//fmt.Println("Round ", round+1)
 
 		for i := range len(input) {
@@ -143,7 +143,8 @@ func part1(input []monkey) {
 				//fmt.Println("Monkey inspects an item with a worry level of ", old)
 				new := curr.operation(old)
 				//fmt.Println("Worry level is now: ", new)
-				new = new / 3
+				new = conv(new)
+				new = new % bigMod
 				//fmt.Println("Monkey gets bored with item. Worry level is divided by 3 to ", new)
 
 				var next_monkey *monkey
