@@ -21,9 +21,9 @@ func parseInput(path string) (monkeys []monkey, err error) {
 		return nil, err
 	}
 
-	sections := bytes.Split(data, []byte{'\n', '\n'})
+	sections := bytes.SplitSeq(data, []byte{'\n', '\n'})
 
-	for _, section := range sections {
+	for section := range sections {
 		lines := bytes.Split(section, []byte{'\n'})
 
 		//Monkey 1:
@@ -124,12 +124,17 @@ func main() {
 
 	fmt.Println(input)
 
-	part1(input, 20, func(x int) int { return x / 3 })
+	//part1(input, 20, func(x int) int { return x / 3 })
+	part1(input, 10_000, func(x int) int { return x })
 }
 
 func part1(input []monkey, rounds int, conv func(int) int) {
 
 	activity := make([]int, len(input))
+	bigMod := 1
+	for _, m := range input {
+		bigMod *= m.test[0]
+	}
 
 	for round := range rounds {
 		//fmt.Println("Round ", round+1)
@@ -144,7 +149,7 @@ func part1(input []monkey, rounds int, conv func(int) int) {
 				new := curr.operation(old)
 				//fmt.Println("Worry level is now: ", new)
 				new = conv(new)
-				new = new % bigMod
+				new %= bigMod
 				//fmt.Println("Monkey gets bored with item. Worry level is divided by 3 to ", new)
 
 				var next_monkey *monkey
