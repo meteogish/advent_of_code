@@ -124,11 +124,12 @@ func main() {
 
 	fmt.Println(input)
 
-	//part1(input, 20, func(x int) int { return x / 3 })
-	part1(input, 10_000, func(x int) int { return x })
+	//Run only ONE part at a time because of mutability
+	//part(input, 20, func(x int) int { return x / 3 })
+	part(input, 10_000, func(x int) int { return x })
 }
 
-func part1(input []monkey, rounds int, conv func(int) int) {
+func part(input []monkey, rounds int, conv func(int) int) {
 
 	activity := make([]int, len(input))
 	bigMod := 1
