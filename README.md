@@ -75,8 +75,8 @@
 | [Day 8: Treetop Tree House](https://adventofcode.com/2022/day/8)         | [F#](./fsharp/2022/day8.fsx)            |
 | [Day 9: Rope Bridge](https://adventofcode.com/2022/day/9)                | [Go](./go-solutions/2022/day09/main.go) |
 | [Day 10: Cathode-Ray Tube](https://adventofcode.com/2022/day/10)         | [Go](./go-solutions/2022/day10/main.go) |
-| [Day 11: Monkey in the Middle](https://adventofcode.com/2022/day/11)     |                                         |
-| [Day 12: Hill Climbing Algorithm](https://adventofcode.com/2022/day/12)  |                                         |
+| [Day 11: Monkey in the Middle](https://adventofcode.com/2022/day/11)     | [Go](./go-solutions/2022/day11/main.go) |
+| [Day 12: Hill Climbing Algorithm](https://adventofcode.com/2022/day/12)  | [Go](./go-solutions/2022/day12/main.go) |
 | [Day 13: Distress Signal](https://adventofcode.com/2022/day/13)          |                                         |
 | [Day 14: Regolith Reservoir](https://adventofcode.com/2022/day/14)       |                                         |
 | [Day 15: Beacon Exclusion Zone](https://adventofcode.com/2022/day/15)    |                                         |

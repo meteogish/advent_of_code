@@ -119,14 +119,6 @@ func countMinDistance(input hill, isTarget func(byte) bool, isNeighbour isNeighb
 			return false
 		})
 
-		// neigh = slices.DeleteFunc(neigh, func(item queueItem) bool {
-		// 	_, ok := set[item.pos]
-		// 	if !ok {
-		// 		set[item.pos] = true
-		// 	}
-		// 	return ok
-		// })
-
 		queue = slices.Concat(queue[1:], neigh)
 
 		//fmt.Println(queue)
