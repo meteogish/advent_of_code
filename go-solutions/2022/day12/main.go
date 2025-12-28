@@ -16,6 +16,20 @@ type hill struct {
 	end   position
 }
 
+type queueItem struct {
+	pos  position
+	dist int
+}
+
+type isNeighbour func(byte, byte, position) bool
+
+var steps = []position{
+	{0, 1},
+	{0, -1},
+	{-1, 0},
+	{1, 0},
+}
+
 func readInput(path string) (hill, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -55,82 +69,83 @@ func main() {
 		fmt.Println(err)
 	}
 
-	fmt.Println(input.start)
-	fmt.Println(input.end)
-	//part1(input, func(val byte) bool { return val == 'E' }, part1Neighbour)
-	part1(hill{
+	fmt.Printf("Part 1: %v\n", part1(input))
+	fmt.Printf("Part 2: %v\n", part2(input))
+}
+
+func part1(input hill) int {
+	isNeighbour := func(val, nextVal byte, pos position) bool {
+		return val == 'S' || (val == 'z' && nextVal == 'E') || (nextVal != 'E' && val+1 >= nextVal)
+	}
+
+	return countMinDistance(input, func(val byte) bool { return val == 'E' }, isNeighbour)
+}
+
+func part2(input hill) int {
+	isNeighbour := func(val, nextVal byte, pos position) bool {
+		return val == 'a' || (val == 'E' && nextVal == 'z') || (val != 'E' && nextVal+1 >= val)
+	}
+
+	// Start from the top of the hill 'E' and move to the 'a' capturing the shortest path
+	input = hill{
 		data:  input.data,
 		start: input.end,
 		end:   input.start,
-	}, func(val byte) bool { return val == 'a' || val == 'S' }, part2Neighbour)
+	}
+
+	return countMinDistance(input, func(val byte) bool { return val == 'a' || val == 'S' }, isNeighbour)
 }
 
-type queueItem struct {
-	pos  position
-	dist int
-}
-
-type isNeighbour func(byte, byte) bool
-
-func part1Neighbour(val, nextVal byte) bool {
-	return val == 'S' || (val == 'z' && nextVal == 'E') || (nextVal != 'E' && val+1 >= nextVal)
-}
-
-func part2Neighbour(val, nextVal byte) bool {
-	return val == 'a' || (val == 'E' && nextVal == 'z') || (val != 'E' && nextVal+1 >= val)
-}
-
-func part1(input hill, isTarget func(byte) bool, isNeighbour isNeighbour) {
+func countMinDistance(input hill, isTarget func(byte) bool, isNeighbour isNeighbour) int {
 	queue := []queueItem{{input.start, 0}}
 	set := map[position]bool{}
 	set[input.start] = true
 
 	for len(queue) > 0 {
 		curr := queue[0]
-		fmt.Printf("Curr: %v, val: %v\n", curr.pos, string(input.val(curr.pos)))
+		//fmt.Printf("Curr: %v, val: %v\n", curr.pos, string(input.val(curr.pos)))
 		if isTarget(input.val(curr.pos)) {
-			fmt.Printf("Found: %v \n", curr)
-			break
+			//fmt.Printf("Found: %v \n", curr)
+			return curr.dist
 		}
-		neigh := getNeighbours(input, curr, isNeighbour)
-
-		neigh = slices.DeleteFunc(neigh, func(item queueItem) bool {
-			_, ok := set[item.pos]
-			if !ok {
-				set[item.pos] = true
+		neigh := getNeighbours(input, curr, func(val byte, nextVal byte, nextPos position) bool {
+			if isNeighbour(val, nextVal, nextPos) {
+				_, ok := set[nextPos]
+				if !ok {
+					set[nextPos] = true
+				}
+				return !ok
 			}
-			return ok
+			return false
 		})
+
+		// neigh = slices.DeleteFunc(neigh, func(item queueItem) bool {
+		// 	_, ok := set[item.pos]
+		// 	if !ok {
+		// 		set[item.pos] = true
+		// 	}
+		// 	return ok
+		// })
 
 		queue = slices.Concat(queue[1:], neigh)
 
-		fmt.Println(queue)
-		fmt.Println()
+		//fmt.Println(queue)
+		//fmt.Println()
 	}
+
+	return -1
 }
 
 func getNeighbours(input hill, curr queueItem, isNeighbour isNeighbour) []queueItem {
 	pos := curr.pos
-	var steps = []position{
-		position{0, 1},
-		position{0, -1},
-		position{-1, 0},
-		position{1, 0},
-	}
-
 	val := input.val(pos)
 	neighbours := slices.Collect(func(yield func(queueItem) bool) {
 		for _, n := range steps {
-			next := position{pos[0] + n[0], pos[1] + n[1]}
-			item := queueItem{next, curr.dist + 1}
-			if next[0] >= 0 && next[0] < len(input.data) && next[1] >= 0 && next[1] < len(input.data[0]) {
-				nextVal := input.val(next)
-				//if val == 'S' || (val == 'z' && nextVal == 'E') || (nextVal != 'E' && val+1 >= input.val(next)) {
-				if isNeighbour(val, nextVal) {
-					if nextVal == 'E' {
-						fmt.Printf("Adding E: %v, %v\n", string(val), pos)
-						fmt.Printf("%v\n", val == 'z')
-					}
+			nextPos := position{pos[0] + n[0], pos[1] + n[1]}
+			item := queueItem{nextPos, curr.dist + 1}
+			if nextPos[0] >= 0 && nextPos[0] < len(input.data) && nextPos[1] >= 0 && nextPos[1] < len(input.data[0]) {
+				nextVal := input.val(nextPos)
+				if isNeighbour(val, nextVal, nextPos) {
 					if !yield(item) {
 						return
 					}
@@ -139,10 +154,5 @@ func getNeighbours(input hill, curr queueItem, isNeighbour isNeighbour) []queueI
 		}
 	})
 
-	// slices.SortFunc(neighbours, func(a, b position) int {
-	// // get a distance between the point and a target
-	// // sort by lesser distance
-	// 	return 1
-	// })
 	return neighbours
 }
