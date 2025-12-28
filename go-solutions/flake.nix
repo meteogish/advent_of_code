@@ -18,7 +18,7 @@
       ];
 
       perSystem =
-        {  pkgs, system, ... }:
+        { pkgs, system, ... }:
         let
           goMod = builtins.readFile ./go.mod;
           versionMatch = builtins.match ".*go[[:space:]]([0-9]+\\.[0-9]+)(\\.[0-9]+)?.*" goMod;
