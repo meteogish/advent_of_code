@@ -57,7 +57,12 @@ func main() {
 
 	fmt.Println(input.start)
 	fmt.Println(input.end)
-	part1(input)
+	//part1(input, func(val byte) bool { return val == 'E' }, part1Neighbour)
+	part1(hill{
+		data:  input.data,
+		start: input.end,
+		end:   input.start,
+	}, func(val byte) bool { return val == 'a' || val == 'S' }, part2Neighbour)
 }
 
 type queueItem struct {
@@ -65,7 +70,17 @@ type queueItem struct {
 	dist int
 }
 
-func part1(input hill) {
+type isNeighbour func(byte, byte) bool
+
+func part1Neighbour(val, nextVal byte) bool {
+	return val == 'S' || (val == 'z' && nextVal == 'E') || (nextVal != 'E' && val+1 >= nextVal)
+}
+
+func part2Neighbour(val, nextVal byte) bool {
+	return val == 'a' || (val == 'E' && nextVal == 'z') || (val != 'E' && nextVal+1 >= val)
+}
+
+func part1(input hill, isTarget func(byte) bool, isNeighbour isNeighbour) {
 	queue := []queueItem{{input.start, 0}}
 	set := map[position]bool{}
 	set[input.start] = true
@@ -73,11 +88,11 @@ func part1(input hill) {
 	for len(queue) > 0 {
 		curr := queue[0]
 		fmt.Printf("Curr: %v, val: %v\n", curr.pos, string(input.val(curr.pos)))
-		if input.val(curr.pos) == 'E' {
+		if isTarget(input.val(curr.pos)) {
 			fmt.Printf("Found: %v \n", curr)
 			break
 		}
-		neigh := getNeighbours(input, curr)
+		neigh := getNeighbours(input, curr, isNeighbour)
 
 		neigh = slices.DeleteFunc(neigh, func(item queueItem) bool {
 			_, ok := set[item.pos]
@@ -94,7 +109,7 @@ func part1(input hill) {
 	}
 }
 
-func getNeighbours(input hill, curr queueItem) []queueItem {
+func getNeighbours(input hill, curr queueItem, isNeighbour isNeighbour) []queueItem {
 	pos := curr.pos
 	var steps = []position{
 		position{0, 1},
@@ -110,7 +125,8 @@ func getNeighbours(input hill, curr queueItem) []queueItem {
 			item := queueItem{next, curr.dist + 1}
 			if next[0] >= 0 && next[0] < len(input.data) && next[1] >= 0 && next[1] < len(input.data[0]) {
 				nextVal := input.val(next)
-				if val == 'S' || (val == 'z' && nextVal == 'E') || (nextVal != 'E' && val+1 >= input.val(next)) {
+				//if val == 'S' || (val == 'z' && nextVal == 'E') || (nextVal != 'E' && val+1 >= input.val(next)) {
+				if isNeighbour(val, nextVal) {
 					if nextVal == 'E' {
 						fmt.Printf("Adding E: %v, %v\n", string(val), pos)
 						fmt.Printf("%v\n", val == 'z')
