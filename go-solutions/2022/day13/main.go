@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"slices"
 	"strconv"
 )
 
@@ -15,20 +14,35 @@ type node struct {
 
 const file = "./input"
 
-func part1() (int, error) {
+func main() {
+	result, err := bothPartsInO_N()
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("Part 1&2: ", result)
+	}
+}
+
+func bothPartsInO_N() ([]int, error) {
 	file, err := os.Open(file)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	defer file.Close()
 
+	//for part1
 	pairIdx := 1
-	sum := 0
-
+	part1 := 0
 	i := 0
-
 	pair := [2]string{}
+
+	//for part2
+	el2 := "[[2]]"
+	el6 := "[[6]]"
+	//How many elems before el2 and el6 would appear
+	beforeEl2 := 0
+	beforeEl6 := 0
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -37,60 +51,34 @@ func part1() (int, error) {
 		if len(line) == 0 {
 			if cmp(&pair[0], &pair[1]) == -1 {
 				fmt.Println("pairs same: ", pairIdx)
-				sum += pairIdx
+				part1 += pairIdx
 			}
 			pairIdx += 1
 		} else {
 			pair[i] = line
 			i = (i + 1) % 2
+
+			//for part2
+			if cmp(&line, &el2) < 0 {
+				beforeEl2 += 1
+			}
+
+			if cmp(&line, &el6) < 0 {
+				beforeEl6 += 1
+			}
 		}
 	}
 	if cmp(&pair[0], &pair[1]) == -1 {
-		sum += pairIdx
+		part1 += pairIdx
 	}
 
-	return sum, nil
-}
+	//+2 because
+	// el2 will occupy 1 place and shift
+	// and then el6 will occupy 1 place and shift
+	// and the numeration is naturally from 1
+	part2 := (beforeEl2 + 1) * (beforeEl6 + 2)
 
-func part2() (int, error) {
-	file, err := os.Open(file)
-	if err != nil {
-		return 0, err
-	}
-
-	defer file.Close()
-
-	lines := []string{"[[2]]", "[[6]]"}
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if len(line) > 0 {
-			lines = append(lines, line)
-		}
-	}
-
-	slices.SortFunc(lines, func(l, r string) int {
-		return cmp(&l, &r)
-	})
-
-	i0 := -1
-	i1 := -1
-
-	for i := 0; i < len(lines); i++ {
-		if lines[i] == "[[2]]" {
-			i0 = i
-		}
-		if lines[i] == "[[6]]" {
-			i1 = i
-		}
-
-		if i0 != -1 && i1 != -1 {
-			break
-		}
-	}
-
-	return (i0 + 1) * (i1 + 1), nil
+	return []int{part1, part2}, nil
 }
 
 const (
@@ -271,20 +259,4 @@ func cmp(l0 *string, l1 *string) int {
 	}
 
 	return -1
-}
-
-func main() {
-	// res1, err := part1()
-	// if err != nil {
-	// 	fmt.Println("{v}", err)
-	// } else {
-	// 	fmt.Println("{v}", res1)
-	// }
-
-	res2, err := part2()
-	if err != nil {
-		fmt.Println("{v}", err)
-	} else {
-		fmt.Println("{v}", res2)
-	}
 }
