@@ -13,7 +13,7 @@ type node struct {
 }
 
 func readFile() (int, error) {
-	file, err := os.Open("./test")
+	file, err := os.Open("./input")
 	if err != nil {
 		return 0, err
 	}
@@ -33,6 +33,7 @@ func readFile() (int, error) {
 
 		if len(line) == 0 {
 			if cmp(&pair[0], &pair[1]) == -1 {
+				fmt.Println("pairs same: ", pairIdx)
 				sum += pairIdx
 			}
 			pairIdx += 1
@@ -50,8 +51,8 @@ func readFile() (int, error) {
 
 const (
 	Nil int = iota
-	Cons
-	Literal
+	List
+	Number
 )
 
 type TokenInfo struct {
@@ -60,16 +61,23 @@ type TokenInfo struct {
 }
 
 func advanceToken(l *string, lenl int, i int) TokenInfo {
-	if (*l)[i] == ']' {
+	if (*l)[i] == ']' || (*l)[i] == ',' {
 		return TokenInfo{Kind: Nil, EndIdx: i + 1}
 	}
 
-	if i < (lenl-1) && string([]byte{(*l)[i], (*l)[i+1]}) == "[]" {
-		return TokenInfo{Kind: Cons, EndIdx: i + 2}
-	}
+	// if i < (lenl-1) && string([]byte{(*l)[i], (*l)[i+1]}) == "[]" {
+	// 	return TokenInfo{Kind: EmptyList, EndIdx: i + 2}
+	// }
+	// if (*l)[i] == ',' {
+	// 	return advanceToken(l, lenl, i+1)
+	// }
 
-	if (*l)[i] == ',' || (*l)[i] == '[' {
-		return TokenInfo{Kind: Cons, EndIdx: i + 1}
+	if (*l)[i] == '[' {
+		if i < (lenl-1) && (*l)[i+1] == ']' {
+			return TokenInfo{Kind: Nil, EndIdx: i + 2}
+		}
+
+		return TokenInfo{Kind: List, EndIdx: i + 1}
 	}
 
 	s := i + 1
@@ -78,7 +86,7 @@ func advanceToken(l *string, lenl int, i int) TokenInfo {
 		s += 1
 	}
 
-	return TokenInfo{Kind: Literal, EndIdx: s}
+	return TokenInfo{Kind: Number, EndIdx: s}
 }
 
 func cmpLiteralCons(literal int64, l *string, idx_s *int) int {
@@ -139,7 +147,7 @@ func cmp(l0 *string, l1 *string) int {
 	len0 := len(*l0)
 	len1 := len(*l1)
 
-	for i0 < len0 {
+	for i0 < len0 && i1 < len1 {
 		t0 := advanceToken(l0, len0, i0)
 		t1 := advanceToken(l1, len1, i1)
 
@@ -147,20 +155,25 @@ func cmp(l0 *string, l1 *string) int {
 			if t1.Kind == Nil {
 				i0 = t0.EndIdx
 				i1 = t1.EndIdx
+				continue
 			}
 
 			//t1 is literal or cons
 			return -1
 		}
 
-		if t0.Kind == Literal {
+		if t0.Kind == Number {
 			lit0, err0 := strconv.ParseInt((*l0)[i0:t0.EndIdx], 10, 8)
 
 			if err0 != nil {
 				return -1
 			}
 
-			if t1.Kind == Literal {
+			if t1.Kind == Nil {
+				return 1
+			}
+
+			if t1.Kind == Number {
 				lit1, err1 := strconv.ParseInt((*l1)[i1:t1.EndIdx], 10, 8)
 
 				if err1 != nil {
@@ -179,11 +192,7 @@ func cmp(l0 *string, l1 *string) int {
 				return 1
 			}
 
-			if t1.Kind == Nil {
-				return 1
-			}
-
-			if t1.Kind == Cons {
+			if t1.Kind == List {
 				//TODO: compareLiteralWithCons
 				res := cmpLiteralCons(lit0, l1, &i1)
 				if res != 0 {
@@ -195,14 +204,14 @@ func cmp(l0 *string, l1 *string) int {
 			}
 		}
 
-		if t0.Kind == Cons {
+		if t0.Kind == List {
 			// cons vs nil
 			if t1.Kind == Nil {
 				return 1
 			}
 
 			// cons vs cons
-			if t1.Kind == Cons {
+			if t1.Kind == List {
 				i0 = t0.EndIdx
 				i1 = t1.EndIdx
 				continue
