@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 )
 
@@ -12,8 +13,10 @@ type node struct {
 	nodes []node
 }
 
-func readFile() (int, error) {
-	file, err := os.Open("./input")
+const file = "./input"
+
+func part1() (int, error) {
+	file, err := os.Open(file)
 	if err != nil {
 		return 0, err
 	}
@@ -49,6 +52,47 @@ func readFile() (int, error) {
 	return sum, nil
 }
 
+func part2() (int, error) {
+	file, err := os.Open(file)
+	if err != nil {
+		return 0, err
+	}
+
+	defer file.Close()
+
+	lines := []string{"[[2]]", "[[6]]"}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if len(line) > 0 {
+			lines = append(lines, line)
+		}
+	}
+
+	slices.SortFunc(lines, func(l, r string) int {
+		return cmp(&l, &r)
+	})
+
+	i0 := -1
+	i1 := -1
+
+	for i := 0; i < len(lines); i++ {
+		if lines[i] == "[[2]]" {
+			i0 = i
+		}
+		if lines[i] == "[[6]]" {
+			i1 = i
+		}
+
+		if i0 != -1 && i1 != -1 {
+			break
+		}
+	}
+
+	return (i0 + 1) * (i1 + 1), nil
+}
+
 const (
 	Nil int = iota
 	List
@@ -64,13 +108,6 @@ func advanceToken(l *string, lenl int, i int) TokenInfo {
 	if (*l)[i] == ']' || (*l)[i] == ',' {
 		return TokenInfo{Kind: Nil, EndIdx: i + 1}
 	}
-
-	// if i < (lenl-1) && string([]byte{(*l)[i], (*l)[i+1]}) == "[]" {
-	// 	return TokenInfo{Kind: EmptyList, EndIdx: i + 2}
-	// }
-	// if (*l)[i] == ',' {
-	// 	return advanceToken(l, lenl, i+1)
-	// }
 
 	if (*l)[i] == '[' {
 		if i < (lenl-1) && (*l)[i+1] == ']' {
@@ -89,7 +126,7 @@ func advanceToken(l *string, lenl int, i int) TokenInfo {
 	return TokenInfo{Kind: Number, EndIdx: s}
 }
 
-func cmpLiteralCons(literal int64, l *string, idx_s *int) int {
+func compareListAndNumber(number int64, l *string, idx_s *int) int {
 	depth := 0
 	idx := *idx_s
 	for (*l)[idx] == '[' {
@@ -109,17 +146,17 @@ func cmpLiteralCons(literal int64, l *string, idx_s *int) int {
 		idx += 1
 	}
 
-	//const other_literal = std.fmt.parseInt(u8, l[lit_start:idx], 10) catch unreachable;
-	other_literal, err0 := strconv.ParseInt((*l)[lit_start:idx], 10, 8)
+	//const other_number = std.fmt.parseInt(u8, l[lit_start:idx], 10) catch unreachable;
+	other_number, err0 := strconv.ParseInt((*l)[lit_start:idx], 10, 8)
 
 	if err0 != nil {
 		return -1
 	}
 
-	if literal < other_literal {
+	if number < other_number {
 		return -1
 	}
-	if literal > other_literal {
+	if number > other_number {
 		return 1
 	}
 
@@ -158,7 +195,7 @@ func cmp(l0 *string, l1 *string) int {
 				continue
 			}
 
-			//t1 is literal or cons
+			//t1 is number or a non-empty list
 			return -1
 		}
 
@@ -193,8 +230,7 @@ func cmp(l0 *string, l1 *string) int {
 			}
 
 			if t1.Kind == List {
-				//TODO: compareLiteralWithCons
-				res := cmpLiteralCons(lit0, l1, &i1)
+				res := compareListAndNumber(lit0, l1, &i1)
 				if res != 0 {
 					return res
 				}
@@ -205,7 +241,6 @@ func cmp(l0 *string, l1 *string) int {
 		}
 
 		if t0.Kind == List {
-			// cons vs nil
 			if t1.Kind == Nil {
 				return 1
 			}
@@ -221,7 +256,7 @@ func cmp(l0 *string, l1 *string) int {
 			if err != nil {
 				return -1
 			}
-			res := cmpLiteralCons(lit1, l0, &i0)
+			res := compareListAndNumber(lit1, l0, &i0)
 			if res != 0 {
 				return res * -1
 			}
@@ -239,10 +274,17 @@ func cmp(l0 *string, l1 *string) int {
 }
 
 func main() {
-	res, err := readFile()
+	// res1, err := part1()
+	// if err != nil {
+	// 	fmt.Println("{v}", err)
+	// } else {
+	// 	fmt.Println("{v}", res1)
+	// }
+
+	res2, err := part2()
 	if err != nil {
 		fmt.Println("{v}", err)
 	} else {
-		fmt.Println("{v}", res)
+		fmt.Println("{v}", res2)
 	}
 }
