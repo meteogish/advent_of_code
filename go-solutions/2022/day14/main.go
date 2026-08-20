@@ -24,6 +24,22 @@ type Canvas struct {
 	MaxCols int
 }
 
+func (c Canvas) Clone() Canvas {
+	newMap := make(map[Tuple]bool)
+
+	for k, v := range c.Canvas {
+		newMap[k] = v
+	}
+
+	return Canvas{
+		Canvas:  newMap,
+		MinRows: c.MinRows,
+		MaxRows: c.MaxRows,
+		MinCols: c.MinCols,
+		MaxCols: c.MaxCols,
+	}
+}
+
 func parseLines() ([]Chain, error) {
 	items := make([]Chain, 0)
 
@@ -168,7 +184,6 @@ func printGrid(canvas Canvas) {
 func part1(mapka Canvas) {
 	start := Tuple{500, 0}
 	current := start
-	cycles := 0
 	counter := 0
 
 	for {
@@ -200,16 +215,49 @@ func part1(mapka Canvas) {
 				}
 			}
 		}
+	}
+	fmt.Printf("Part 1: %v \n", counter)
 
-		//fmt.Printf("Current: %v\n", current)
-		cycles += 1
+}
 
-		if cycles >= 9000000 {
-			fmt.Println("Cycles break")
-			break
+func part2(mapka Canvas) {
+	start := Tuple{500, 0}
+	current := start
+	counter := 0
+
+	for {
+		next_row := Tuple{current[0], current[1] + 1}
+
+		is_down_blocked, _ := mapka.Canvas[next_row]
+
+		if !is_down_blocked && (next_row[1] < mapka.MaxRows+2) {
+			current = next_row
+		} else {
+			left := Tuple{next_row[0] - 1, next_row[1]}
+
+			is_left_blocked, _ := mapka.Canvas[left]
+			if !is_left_blocked && (left[1] < mapka.MaxRows+2) {
+				current = left
+			} else {
+				right := Tuple{next_row[0] + 1, next_row[1]}
+
+				is_right_blocked, _ := mapka.Canvas[right]
+				if !is_right_blocked && (next_row[1] < mapka.MaxRows+2) {
+					current = right
+				} else {
+					counter = counter + 1
+					mapka.Canvas[current] = true
+
+					if current == start {
+						break
+					}
+
+					current = start
+				}
+			}
 		}
 	}
-	fmt.Printf("Abbyss %v \n", counter)
+	fmt.Printf("Part 2: %v \n", counter)
 
 }
 
@@ -222,9 +270,11 @@ func main() {
 	}
 
 	canvas := createFilledOutCanvas(items)
+	canvas2 := canvas.Clone()
 	printGrid(canvas)
 	part1(canvas)
-	printGrid(canvas)
+	part2(canvas2)
+	printGrid(canvas2)
 
 	// all_in := true
 	// for _, line := range items {
