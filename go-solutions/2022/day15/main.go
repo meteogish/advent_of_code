@@ -53,8 +53,8 @@ func parseLine(line string) (Pair, error) {
 func parseLines() ([]Pair, error) {
 	items := make([]Pair, 0)
 
-	//f, err := os.Open("input")
-	f, err := os.Open("test")
+	f, err := os.Open("input")
+	//f, err := os.Open("test")
 	if err != nil {
 		return items, err
 	}
@@ -93,10 +93,10 @@ func absDiff(a, b int32) int32 {
 	return int32(math.Abs(float64(a) - float64(b)))
 }
 
-func findIntervals(rowY int32, allPairs []Pair) []Point {
+func findIntervals(rowY int32, sensors []Pair) []Point {
 	intervals := make([]Point, 0)
 
-	for _, pair := range allPairs {
+	for _, pair := range sensors {
 		dist := absDiff(rowY, pair.Sensor.y)
 
 		if dist <= pair.Radius {
@@ -156,30 +156,108 @@ func mergeIntervals(intervals []Point) []Point {
 		sum += int32(math.Abs(float64(p.x))) + int32(math.Abs(float64(p.y)))
 	}
 
-	fmt.Println(sum)
+	fmt.Printf("Part 1: %v\n", sum)
 
 	return merged
 }
 
+func part1(sensors []Pair) {
+	intervals := findIntervals(2000000, sensors)
+	mergeIntervals(intervals)
+}
+
+func part2(sensors []Pair) {
+	all_down_lines := make(map[int32]bool, 0)
+	all_up_lines := make(map[int32]bool, 0)
+
+	for i := range sensors {
+		//y = mx + b
+		//45 down == -1 => y= -x + b => b = x + y
+		//45 up == 1 => y= x + b => b = x - y (I know it's flipped but it simplifies the equations later on, both works)
+		pair := sensors[i]
+
+		d := pair.Radius + 1
+
+		top_right_edge := pair.Sensor.x + pair.Sensor.y + d
+		bottom_left_edge := pair.Sensor.x + pair.Sensor.y - d
+
+		bottom_right_edge := pair.Sensor.x - pair.Sensor.y + d
+		top_left_edge := pair.Sensor.x - pair.Sensor.y - d
+
+		all_down_lines[top_right_edge] = true
+		all_down_lines[bottom_left_edge] = true
+
+		all_up_lines[bottom_right_edge] = true
+		all_up_lines[top_left_edge] = true
+	}
+
+	down_lines := all_down_lines
+	up_lines := all_up_lines
+
+	// fmt.Println("down slopes")
+	// fmt.Println(down_lines)
+	// fmt.Println("down slopes END")
+	// fmt.Println("up slopes")
+	// fmt.Println(up_lines)
+	// fmt.Println("up slopes END")
+
+	beacons := make(map[Point]bool, 0)
+
+	checkBoundaries := func(value int32) bool {
+		//return value >= 0 && value <= 20
+		return value >= 0 && value < 4_000_000
+	}
+
+	//calculate all possible beacon points as a result of intersection of all outer-boundary slopes
+	for down := range down_lines {
+		for up := range up_lines {
+			x_slope := down + up
+
+			//we should check it's even because it is Manhattan corrdinate system
+			if x_slope%2 == 0 {
+				x := x_slope / 2
+				y := down - x
+
+				if checkBoundaries(x) && checkBoundaries(y) {
+					p := Point{
+						x: x,
+						y: y,
+					}
+					beacons[p] = true
+				}
+			}
+		}
+	}
+
+	//find a beacon that is "far away" from _each_ sensor
+	for b := range beacons {
+		//fmt.Println(b)
+		allPass := true
+		for _, pair := range sensors {
+			d := distance(b.x, b.y, pair.Sensor.x, pair.Sensor.y)
+
+			if d <= pair.Radius {
+				allPass = false
+			}
+		}
+
+		if allPass {
+
+			beacon_tuning_frequency := int64(b.x)*4_000_000 + int64(b.y)
+			fmt.Printf("Found beacon: %v, Part2: %v\n", b, beacon_tuning_frequency)
+		}
+	}
+
+}
+
 func main() {
 	fmt.Println("Day 15")
-	pairs, err := parseLines()
+	sensors, err := parseLines()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	filterPart2 := make([]Pair, 0)
-
-	for _, p := range pairs {
-		if p.Beacon.x >= 0 && p.Beacon.x < 20 && p.Beacon.y >= 0 && p.Beacon.y < 20 {
-			filterPart2 = append(filterPart2, p)
-		}
-	}
-
-	//intervals := findIntervals(2000000, pairs)
-	intervals := findIntervals(10, filterPart2)
-	fmt.Println(intervals)
-	fmt.Println()
-	fmt.Println(mergeIntervals(intervals))
+	part1(sensors)
+	part2(sensors)
 }
